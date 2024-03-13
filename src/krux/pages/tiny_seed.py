@@ -8,7 +8,7 @@ from embit.wordlists.bip39 import WORDLIST
 from . import Page
 from ..themes import theme
 from ..wdt import wdt
-from ..krux_settings import t
+from ..krux_settings import t, Settings
 from ..display import DEFAULT_PADDING, FLASH_MSG_TIME
 from ..camera import OV7740_ID, OV2640_ID, OV5642_ID
 from ..input import BUTTON_ENTER, BUTTON_PAGE, BUTTON_PAGE_PREV, BUTTON_TOUCH, PRESSED
@@ -560,28 +560,48 @@ class TinyScanner(Page):
         self.tiny_seed = TinySeed(self.ctx)
 
     def _map_punches_region(self, rect_size, page=0):
+        if Settings().binaryseedgrid.type == "TinySeed":
+            xpad_factor = 240 / (12 * 345)
+            ypad_factor = 210 / (12 * 272)
+            x_offset_tweak_amigo = 0
+            y_offset_tweak_amigo = 0
+            x_offset_tweak = 0
+            y_offset_tweak = 0
+
+        elif Settings().binaryseedgrid.type == "OneKey KeyTag":
+            xpad_factor = 250 / (13 * 345)
+            ypad_factor = 210 / (13 * 272)
+            x_offset_tweak_amigo = 5
+            y_offset_tweak_amigo = 8
+
+            x_offset_tweak_p0 = 3
+            y_offset_tweak_p0 = 5
+
+            x_offset_tweak_p1 = 0
+            y_offset_tweak_p1 = 2
+
         # Think in portrait mode, with Tiny Seed tilted 90 degrees
         self.x_regions = []
         self.y_regions = []
         if not page:
             if board.config["type"].startswith("amigo"):
                 # Amigo has mirrored coordinates
-                x_offset = rect_size[0] + (rect_size[2] * 39) / 345
-                y_offset = rect_size[1] + (rect_size[3] * 44) / 272
+                x_offset = rect_size[0] + x_offset_tweak_amigo + (rect_size[2] * 39) / 345
+                y_offset = rect_size[1] + y_offset_tweak_amigo + (rect_size[3] * 44) / 272
             else:
-                x_offset = rect_size[0] + (rect_size[2] * 65) / 345
-                y_offset = rect_size[1] + (rect_size[3] * 17) / 272
+                x_offset = rect_size[0] + x_offset_tweak_p0 + (rect_size[2] * 65) / 345
+                y_offset = rect_size[1] + y_offset_tweak_p0 + (rect_size[3] * 17) / 272
         else:
             if board.config["type"].startswith("amigo"):
-                x_offset = rect_size[0] + (rect_size[2] * 42) / 345
-                y_offset = rect_size[1] + (rect_size[3] * 41) / 272
+                x_offset = rect_size[0] + x_offset_tweak_amigo + (rect_size[2] * 42) / 345
+                y_offset = rect_size[1] + y_offset_tweak_amigo + (rect_size[3] * 41) / 272
             else:
-                x_offset = rect_size[0] + (rect_size[2] * 62) / 345
-                y_offset = rect_size[1] + (rect_size[3] * 22) / 272
+                x_offset = rect_size[0] + x_offset_tweak_p1 + (rect_size[2] * 62) / 345
+                y_offset = rect_size[1] + y_offset_tweak_p1 + (rect_size[3] * 22) / 272
         self.x_regions.append(int(x_offset))
         self.y_regions.append(int(y_offset))
-        x_pad = rect_size[2] * 240 / (12 * 345)
-        y_pad = rect_size[3] * 210 / (12 * 272)
+        x_pad = rect_size[2] * xpad_factor
+        y_pad = rect_size[3] * ypad_factor
         for _ in range(12):
             x_offset += x_pad
             y_offset += y_pad
@@ -719,13 +739,23 @@ class TinyScanner(Page):
                     and rect[1]
                     and (rect[0] + rect[2]) < img.width()
                     and (rect[1] + rect[3]) < img.height()
-                    and aspect_low < aspect < 1.3
+                    and aspect_low < aspect < aspect_high
                 ):
                     return rect
             return None
 
-        # Big lenses cameras seems to distor aspect ratio to 1.1
-        aspect_low = 1.1 if self.ctx.camera.cam_id in (OV2640_ID, OV5642_ID) else 1.2
+
+        if Settings().binaryseedgrid.type == "TinySeed":
+            aspect_high = 1.3
+            aspect_low = 1.1
+        elif Settings().binaryseedgrid.type == "OneKey KeyTag":
+            aspect_high = 1.1
+            aspect_low = 0.9
+
+        # Big lenses cameras seems to distort aspect ratio
+        if self.ctx.camera.cam_id not in (OV2640_ID, OV5642_ID):
+            aspect_low += 0.1
+
         stats = img.get_statistics()
         # # Debug stats
         # img.draw_string(10,10,"Mean:"+str(stats.mean()))

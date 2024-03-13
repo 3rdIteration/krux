@@ -333,6 +333,18 @@ class ThemeSettings(SettingsNamespace):
             "theme": t("Theme"),
         }[attr]
 
+class BinaryGridSeedSettings(SettingsNamespace):
+    """Binary Grid Seed settings"""
+
+    namespace = "settings.binarygridseed"
+    type = CategorySetting("type", "TinySeed", ["TinySeed", "OneKey KeyTag"])
+
+    def label(self, attr):
+        """Returns a label for UI when given a setting name or namespace"""
+        return {
+            "type": t("type"),
+        }[attr]
+
 
 class Settings(SettingsNamespace):
     """The top-level settings namespace under which other namespaces reside"""
@@ -347,6 +359,7 @@ class Settings(SettingsNamespace):
         self.printer = PrinterSettings()
         self.persist = PersistSettings()
         self.appearance = ThemeSettings()
+        self.binaryseedgrid = BinaryGridSeedSettings()
         if board.config["type"].startswith("amigo"):
             self.touch = TouchSettings()
         if board.config["type"] == "dock":
@@ -362,6 +375,7 @@ class Settings(SettingsNamespace):
             "persist": t("Persist"),
             "printer": t("Printer"),
             "appearance": t("Theme"),
+            "binarygridseed": t("TinySeed Type"),
         }
         if board.config["type"].startswith("amigo"):
             main_menu["touchscreen"] = t("Touchscreen")
