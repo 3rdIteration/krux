@@ -731,9 +731,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#tiny-seed" class="md-nav__link">
+  <a href="#tiny-seed-onekey-keytag-or-binary-grid" class="md-nav__link">
     <span class="md-ellipsis">
-      Tiny Seed
+      Tiny Seed, OneKey KeyTag or Binary Grid
     </span>
   </a>
   
@@ -1292,9 +1292,15 @@
 </ol>
 <p>After opening your wallet via one of the manual methods you can use Krux to create QR codes of all types above, transcript them to paper or metal using the transcription helpers or attach a thermal printer to your Krux and print out the mnemonic. Check out the <a href="../../features/printing/">Printing section</a> for more information.
 You can also use <a href="https://iancoleman.io/bip39/">an offline QR code generator for this</a> (ideally on an airgapped device).</p>
-<h4 id="tiny-seed">Tiny Seed<a class="headerlink" href="#tiny-seed" title="Permanent link">&para;</a></h4>
-<p><a href="https://tinyseed.io/">Tiny Seed</a> is a compact metal plate mnemonic backup method.
-Krux devices have machine vision capabilities that allow users to scan these metal plates and instantly load mnemonics engraved on them. To properly scan them place the Tiny Seed over a black background and paint the punched bits black to increase contrast. You can also scan the thermally printed version, or a filled template. Find templates to scan or print <a href="https://github.com/odudex/krux_binaries/tree/main/templates">here</a>.</p>
+<h4 id="tiny-seed-onekey-keytag-or-binary-grid">Tiny Seed, OneKey KeyTag or Binary Grid<a class="headerlink" href="#tiny-seed-onekey-keytag-or-binary-grid" title="Permanent link">&para;</a></h4>
+<p>Tiny Seed (and similar methods) directly encode a seed as binary, allowing for a very compact mnemonic storage method when compared to SeedQR and Compact SeedQR.</p>
+<p>Krux devices have machine vision capabilities that allow users to scan these metal plates and instantly load mnemonics engraved on them. (This feature is not available in Krux on Android)</p>
+<p>To properly scan them place the Tiny Seed (or similar) over a black background and paint the punched bits black to increase contrast. You can also scan the thermally printed version, or a filled template.</p>
+<p><a href="../../features/tinyseed/">You can find some examples of seeds encoded with each of the supported formats here.</a></p>
+<p>Retail versions of this type of seed can be purchased here:
+<a href="https://tinyseed.io/">Tiny Seed</a>
+<a href="https://onekey.so/products/onekey-keytag/">Onekey KeyTag</a></p>
+<p>Alternatively, you can find templates to scan or print <a href="https://github.com/odudex/krux_binaries/tree/main/templates">here</a>.</p>
 <h3 id="via-manual-input">Via Manual Input<a class="headerlink" href="#via-manual-input" title="Permanent link">&para;</a></h3>
 <p><img src="../../../img/maixpy_m5stickv/load-mnemonic-manual-options-125.png" align="right">
 <img src="../../../img/maixpy_amigo/load-mnemonic-manual-options-150.png" align="right"></p>
