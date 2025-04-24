@@ -5,3 +5,26 @@
 .md-typeset img.twemoji {
   margin: 0 !important;
 }
+
+.md-typeset h5 {
+  color: black;
+  text-transform: none;
+}
+
+img.amigo {
+  width: 16%;
+  min-width: 100px;
+}
+
+img.amigo.big {
+  width: 21%;
+}
+
+img.m5stickv {
+  width: 13%;
+  min-width: 84px;
+}
+
+img.m5stickv.big {
+  width: 17%;
+}
