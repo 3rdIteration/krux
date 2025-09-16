@@ -37,7 +37,7 @@ from ...qr import FORMAT_NONE
 
 PGP_KEY_LEN = 32
 PGP_KEY_BITS_LEN = 256
-PGP_BIP85_RSA_PATH = 828365
+PGP_BIP85_secp256k1_PATH = 828367
 
 # Using derivation suggested in BIP85 for RSA, although we are using ECDSA curves:
 # m/83696968'/828365'/{key_bits}'/{key_index}
@@ -80,7 +80,7 @@ class GPG(Page):
 
         return bip85.derive_entropy(
             self.ctx.wallet.key.root,
-            PGP_BIP85_RSA_PATH,
+            PGP_BIP85_secp256k1_PATH,
             [PGP_KEY_BITS_LEN, key_index],
         )[:PGP_KEY_LEN]
 
